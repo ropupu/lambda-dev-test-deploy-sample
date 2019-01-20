@@ -16,6 +16,10 @@ ENV PATH $PATH:/opt/node-v8.10.0-linux-x64/bin
 # apex
 RUN curl https://raw.githubusercontent.com/apex/apex/master/install.sh | sh
 
+# test tools
+RUN npm install --global mocha chai proxyquire dotenv
+ENV NODE_PATH /opt/node-v8.10.0-linux-x64/lib/node_modules
+
 WORKDIR /var/lambda/
 
 CMD ["node"]
