@@ -61,4 +61,36 @@ Resources:
                 Action: "sns:Publish"
                 Resource:
                   Ref: SNSTopic
-      
+  LambdaDeployIAMUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: "lambda-deploy-user"
+      Policies:
+        -
+          PolicyName: "lambdadeploy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - 
+                Effect: Allow
+                Action:
+                  - "iam:CreateRole"
+                  - "iam:CreatePolicy"
+                  - "iam:AttachRolePolicy"
+                  - "iam:PassRole"
+                  - "lambda:GetFunction"
+                  - "lambda:ListFunctions"
+                  - "lambda:CreateFunction"
+                  - "lambda:DeleteFunction"
+                  - "lambda:InvokeFunction"
+                  - "lambda:GetFunctionConfiguration"
+                  - "lambda:UpdateFunctionConfiguration"
+                  - "lambda:UpdateFunctionCode"
+                  - "lambda:CreateAlias"
+                  - "lambda:UpdateAlias"
+                  - "lambda:GetAlias"
+                  - "lambda:ListAliases"
+                  - "lambda:ListVersionsByFunction"
+                  - "logs:FilterLogEvents"
+                  - "cloudwatch:GetMetricStatistics"
+                Resource: "*"
