@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Lambda with SNS
+Parameters: 
+  YourEmailAddress:
+    Type: String
+    Description: enter your email address to recive emails from SNS
+Resources:
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: sampletopic
+  SNSSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint: 
+        Ref: YourEmailAddress
+      Protocol: email
+      TopicArn:
+        Ref: SNSTopic 
+  Lambda:
+    Type: "AWS::Lambda::Function"
+    Properties:
+      FunctionName: "publishSNSMessage"
+      MemorySize: 128
+      Role: 
+        Fn::GetAtt:
+          - LambdaIAMRole 
+          - Arn
+      Runtime: "nodejs8.10"
+      Environment:
+        Variables:
+          SNS_TOPIC: 
+            Ref: SNSTopic
+      Handler: index.handler
+      Code: 
+        ZipFile: >
+          exports.handler = async function(event, context) {
+            console.log("sample");
+          }
+  LambdaIAMRole:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - 
+            Effect: Allow
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      Policies:
+        -
+          PolicyName: "snspublish"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: Allow
+                Action: "sns:Publish"
+                Resource:
+                  Ref: SNSTopic
+      
