@@ -1,0 +1,7 @@
+{
+    "name": "lambda-with-sns",
+    "runtime": "nodejs8.10",
+    "memory": 128,
+    "timeout": 5,
+    "nameTemplate": "{{.Function.Name}}"
+}

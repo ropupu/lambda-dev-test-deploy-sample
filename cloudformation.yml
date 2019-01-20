@@ -27,10 +27,6 @@ Resources:
           - LambdaIAMRole 
           - Arn
       Runtime: "nodejs8.10"
-      Environment:
-        Variables:
-          SNS_TOPIC: 
-            Ref: SNSTopic
       Handler: index.handler
       Code: 
         ZipFile: >
@@ -58,7 +54,8 @@ Resources:
             Statement: 
               - 
                 Effect: Allow
-                Action: "sns:Publish"
+                Action: 
+                  - "sns:Publish"
                 Resource:
                   Ref: SNSTopic
   LambdaDeployIAMUser:

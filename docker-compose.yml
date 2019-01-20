@@ -4,4 +4,7 @@ services:
     build:
       context: ./docker
     container_name: lambda
+    env_file: .env
+    volumes:
+      - ./lambda:/var/lambda
     command: tail -f /dev/null
